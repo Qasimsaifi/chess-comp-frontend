@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Chess Game</title>
+    <title>Modern Chess</title>
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <style>
         * {
@@ -12,126 +12,163 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --dark-lighter: #1e293b;
+            --gray: #64748b;
+            --gray-light: #f1f5f9;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow-lg: rgba(0, 0, 0, 0.2);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
-            padding: 35px;
-            max-width: 1400px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 650px 1fr;
-            gap: 35px;
-        }
-
-        .board-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .card h2 {
-            font-size: 20px;
-            margin-bottom: 18px;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-        }
-
-        .card h2::before {
-            content: '';
-            width: 4px;
-            height: 24px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+            min-height: 100vh;
+            padding: 1rem;
+            color: var(--dark);
         }
 
-        #board {
-            width: 600px;
+        .app-container {
+            max-width: 1600px;
             margin: 0 auto;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 1.5rem;
+            height: calc(100vh - 2rem);
         }
 
-        .sidebar {
+        .main-panel {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-height: 100vh;
+            gap: 1.5rem;
             overflow-y: auto;
         }
 
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
+        .header {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-light);
+            border-radius: 2rem;
+            font-size: 0.875rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
+        .status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            background: var(--success);
+            animation: pulse-dot 2s infinite;
         }
 
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        .status-dot.disconnected {
+            background: var(--danger);
         }
 
-        .btn-primary:hover {
+        .board-section {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .board-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #board {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 8px 24px var(--shadow-lg);
+        }
+
+        .eval-container {
+            margin-top: 1rem;
+            background: var(--gray-light);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 2rem;
+            position: relative;
+        }
+
+        .eval-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34d399);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--white);
+        }
+
+        .control-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 4px 12px var(--shadow-lg);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            color: white;
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn:disabled {
@@ -139,596 +176,527 @@
             cursor: not-allowed;
         }
 
-        .side-selection {
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-icon {
+            padding: 0.75rem;
+            min-width: 2.5rem;
+        }
+
+        .sidebar {
             display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
         }
 
-        .side-btn {
-            flex: 1;
-            padding: 16px;
-            border: 2px solid #e2e8f0;
-            background: white;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 15px;
+        .card {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px var(--shadow);
         }
 
-        .side-btn:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        .card-header {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
         }
 
-        .side-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .game-info {
+        .side-selector {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 15px;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
 
-        .info-item {
-            padding: 16px;
-            background: white;
-            border-radius: 10px;
+        .side-option {
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
             text-align: center;
-            border: 2px solid #f1f5f9;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            background: var(--white);
         }
 
-        .info-item:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
+        .side-option:hover {
+            border-color: var(--primary);
+        }
+
+        .side-option.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .info-box {
+            padding: 1rem;
+            background: var(--gray-light);
+            border-radius: 0.5rem;
+            text-align: center;
         }
 
         .info-label {
-            font-size: 11px;
-            color: #64748b;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            color: var(--gray);
             font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
         .info-value {
-            font-size: 18px;
-            font-weight: 800;
-            color: #1e293b;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
         }
 
-        .evaluation-bar-container {
-            width: 100%;
-            height: 30px;
-            background: #1e293b;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-            margin-top: 10px;
+        .move-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        .evaluation-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
-            transition: width 0.5s ease;
+        .move-nav .btn-icon {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .move-position {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            padding: 0.75rem;
+            background: var(--gray-light);
+            border-radius: 0.5rem;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 0.875rem;
         }
 
-        .moves-list {
-            max-height: 350px;
+        .moves-scroll {
+            max-height: 300px;
             overflow-y: auto;
-            background: white;
-            border-radius: 10px;
-            padding: 12px;
+            margin-top: 1rem;
         }
 
-        .moves-list::-webkit-scrollbar {
+        .moves-scroll::-webkit-scrollbar {
             width: 6px;
         }
 
-        .moves-list::-webkit-scrollbar-track {
-            background: #f1f5f9;
+        .moves-scroll::-webkit-scrollbar-track {
+            background: var(--gray-light);
             border-radius: 3px;
         }
 
-        .moves-list::-webkit-scrollbar-thumb {
-            background: #667eea;
+        .moves-scroll::-webkit-scrollbar-thumb {
+            background: var(--primary);
             border-radius: 3px;
         }
 
-        .move-item {
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 10px;
+        .move-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--gray-light);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .move-item:hover {
+        .move-row:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
             transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .move-item:last-child {
-            background: linear-gradient(145deg, #ede9fe 0%, #ddd6fe 100%);
-            border: 2px solid #667eea;
-            animation: pulse 2s infinite;
+        .move-num {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 0.75rem;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.9; }
-        }
-
-        .move-number {
-            font-weight: 800;
-            color: #667eea;
-            margin-right: 12px;
-            font-size: 13px;
-        }
-
-        .move-notation {
+        .move-text {
             flex: 1;
             font-family: 'Courier New', monospace;
             font-weight: 600;
-            font-size: 15px;
         }
 
-        .move-by {
-            font-size: 10px;
-            padding: 4px 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 6px;
-            text-transform: uppercase;
+        .move-badge {
+            padding: 0.25rem 0.5rem;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
-        .move-by.engine {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        .move-badge.engine {
+            background: var(--danger);
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-            font-weight: 500;
+        .games-scroll {
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .games-scroll::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 10px;
-            animation: blink 2s infinite;
+        .games-scroll::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 3px;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .games-scroll::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
         }
 
-        .status-indicator.connected {
-            background: #10b981;
-            box-shadow: 0 0 12px #10b981;
+        .game-card {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--gray-light);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
         }
 
-        .status-indicator.disconnected {
-            background: #dc3545;
+        .game-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
         }
 
-        .connection-status {
+        .game-card.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .game-card-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            color: #64748b;
-            padding: 12px 16px;
-            background: white;
-            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .game-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .game-action-btn {
+            padding: 0.25rem 0.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card.active .game-action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .game-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+        }
+
+        .game-meta-item {
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 0.25rem;
             font-weight: 600;
-            border: 2px solid #f1f5f9;
+        }
+
+        .game-card.active .game-meta-item {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .empty-state-text {
+            font-size: 0.875rem;
         }
 
         .loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10000;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
         }
 
-        .loading-content {
-            background: white;
-            padding: 40px 60px;
-            border-radius: 20px;
+        .loading-card {
+            background: var(--white);
+            padding: 2rem 3rem;
+            border-radius: 1rem;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--gray-light);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
         .loading-text {
-            font-size: 16px;
             font-weight: 600;
-            color: #1e293b;
+            color: var(--dark);
         }
 
-        .game-list {
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        .game-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .game-list::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
-
-        .game-list::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 3px;
-        }
-
-        .game-item {
-            padding: 16px;
-            background: white;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid #e2e8f0;
-        }
-
-        .game-item:hover {
-            background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
-            border-color: #667eea;
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-        }
-
-        .game-item.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .game-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .game-item-name {
-            font-weight: 700;
-            font-size: 15px;
-        }
-
-        .game-item-delete {
-            padding: 6px 12px;
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .game-item-delete:hover {
-            background: #dc3545;
-            color: white;
-        }
-
-        .game-item.active .game-item-delete {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .game-item-info {
-            font-size: 12px;
-            opacity: 0.8;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .game-item-info span {
-            padding: 4px 8px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .game-item.active .game-item-info span {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-small {
-            padding: 10px 16px;
-            font-size: 12px;
-        }
-
-        .move-navigation {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            align-items: center;
-        }
-
-        .move-navigation button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-        }
-
-        .move-navigation button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .move-navigation button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .move-position {
-            padding: 8px 12px;
-            background: white;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 13px;
-            color: #1e293b;
-            white-space: nowrap;
-        }
-
-        .game-name-edit {
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background: white;
-            border-radius: 10px;
-            border: 2px solid #e2e8f0;
-            margin-bottom: 15px;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(4px);
         }
 
-        .game-name-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .modal {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        .game-name-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .game-name-display {
-            flex: 1;
+        .modal-header {
+            font-size: 1.125rem;
             font-weight: 700;
-            font-size: 15px;
-            color: #1e293b;
+            margin-bottom: 1rem;
         }
 
-        .btn-icon {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
 
-        .btn-icon:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-icon.cancel {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        .modal-actions .btn {
+            flex: 1;
         }
 
         @media (max-width: 1200px) {
-            .container {
+            .app-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .control-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .info-grid {
                 grid-template-columns: 1fr;
             }
-            
-            #board {
-                width: 100%;
-                max-width: 600px;
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.625rem 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="board-section">
-            <div class="card">
-                <h2>Chess Board</h2>
-                <div id="board"></div>
-                <div class="evaluation-bar-container">
-                    <div class="evaluation-bar" id="evalBar" style="width: 50%;">
-                        <span id="evalText">0.00</span>
+    <div class="app-container">
+        <div class="main-panel">
+            <div class="header">
+                <div class="logo">
+                    <span>♟️</span>
+                    <span>Modern Chess</span>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Connecting...</span>
+                </div>
+            </div>
+
+            <div class="board-section">
+                <div class="board-wrapper">
+                    <div id="board"></div>
+                    <div class="eval-container">
+                        <div class="eval-bar" id="evalBar" style="width: 50%;">
+                            <span id="evalText">0.00</span>
+                        </div>
                     </div>
+                </div>
+
+                <div class="control-bar">
+                    <button class="btn btn-secondary btn-icon" onclick="flipBoard()" title="Flip Board">🔄</button>
+                    <button class="btn btn-secondary btn-icon" onclick="goToStart()" id="startBtn" disabled title="First Move">⏮️</button>
+                    <button class="btn btn-secondary btn-icon" onclick="previousMove()" id="prevBtn" disabled title="Previous">◀️</button>
+                    <div class="move-position" id="movePosition">Start</div>
+                    <button class="btn btn-secondary btn-icon" onclick="nextMove()" id="nextBtn" disabled title="Next">▶️</button>
+                    <button class="btn btn-secondary btn-icon" onclick="goToEnd()" id="endBtn" disabled title="Last Move">⏭️</button>
+                    <button class="btn btn-secondary" onclick="undoMove()" id="undoBtn" disabled>↶ Undo</button>
+                    <button class="btn btn-secondary" onclick="exportPGN()">📥 Export</button>
+                    <button class="btn btn-danger" onclick="deleteCurrentGame()" id="deleteBtn" disabled>🗑️ Delete</button>
                 </div>
             </div>
         </div>
 
         <div class="sidebar">
             <div class="card">
-                <h2>New Game</h2>
-                <input type="text" id="gameName" placeholder="Enter game name (optional)">
-                <div class="side-selection">
-                    <button class="side-btn active" data-side="white">⚪ White</button>
-                    <button class="side-btn" data-side="black">⚫ Black</button>
+                <div class="card-header">🎮 New Game</div>
+                <input type="text" class="input-field" id="gameName" placeholder="Game name (optional)">
+                <div class="side-selector">
+                    <div class="side-option active" data-side="white">⚪ White</div>
+                    <div class="side-option" data-side="black">⚫ Black</div>
                 </div>
-                <button class="btn btn-primary" style="width: 100%;" onclick="createNewGame()">🎮 Start New Game</button>
+                <button class="btn btn-primary" style="width: 100%;" onclick="createNewGame()">Start Game</button>
             </div>
 
             <div class="card">
-                <h2>Game Status</h2>
-                <div id="gameNameContainer" style="display: none;">
-                    <div class="game-name-edit" id="gameNameDisplay">
-                        <span class="game-name-display" id="currentGameName">No game loaded</span>
-                        <button class="btn-icon" onclick="editGameName()" title="Edit game name">✏️</button>
-                    </div>
-                    <div class="game-name-edit" id="gameNameEdit" style="display: none;">
-                        <input type="text" class="game-name-input" id="gameNameInput" placeholder="Enter game name">
-                        <button class="btn-icon" onclick="saveGameName()" title="Save">💾</button>
-                        <button class="btn-icon cancel" onclick="cancelEditName()" title="Cancel">✖️</button>
-                    </div>
-                </div>
-                <div class="connection-status">
-                    <span class="status-indicator" id="wsStatus"></span>
-                    <span id="wsText">Connecting...</span>
-                </div>
-                <div class="game-info">
-                    <div class="info-item">
+                <div class="card-header">📊 Game Status</div>
+                <div class="info-grid">
+                    <div class="info-box">
                         <div class="info-label">Your Side</div>
                         <div class="info-value" id="playerSide">-</div>
                     </div>
-                    <div class="info-item">
+                    <div class="info-box">
                         <div class="info-label">Turn</div>
                         <div class="info-value" id="currentTurn">-</div>
                     </div>
-                    <div class="info-item">
+                    <div class="info-box">
                         <div class="info-label">Moves</div>
                         <div class="info-value" id="moveCount">0</div>
                     </div>
-                    <div class="info-item">
+                    <div class="info-box">
                         <div class="info-label">Status</div>
                         <div class="info-value" id="gameStatus">-</div>
                     </div>
                 </div>
-                <div class="controls-grid">
-                    <button class="btn btn-secondary btn-small" onclick="flipBoard()">🔄 Flip Board</button>
-                    <button class="btn btn-secondary btn-small" onclick="undoMove()" id="undoBtn" disabled>↶ Undo</button>
-                    <button class="btn btn-secondary btn-small" onclick="exportPGN()">📥 Export PGN</button>
-                    <button class="btn btn-danger btn-small" onclick="deleteCurrentGame()" id="deleteBtn" disabled>🗑️ Delete</button>
-                </div>
             </div>
 
             <div class="card">
-                <h2>Move History</h2>
-                <div class="move-navigation">
-                    <button onclick="goToStart()" id="startBtn" disabled>⏮️</button>
-                    <button onclick="previousMove()" id="prevBtn" disabled>◀️</button>
-                    <div class="move-position" id="movePosition">Start</div>
-                    <button onclick="nextMove()" id="nextBtn" disabled>▶️</button>
-                    <button onclick="goToEnd()" id="endBtn" disabled>⏭️</button>
-                </div>
-                <div class="moves-list" id="movesList">
-                    <div style="text-align: center; color: #94a3b8; padding: 30px;">
-                        <div style="font-size: 48px; margin-bottom: 10px;">♟️</div>
-                        <div style="font-weight: 600;">No moves yet</div>
-                        <div style="font-size: 12px; margin-top: 5px;">Start a game to see moves</div>
+                <div class="card-header">📜 Move History</div>
+                <div class="moves-scroll" id="movesList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">♟️</div>
+                        <div class="empty-state-title">No moves yet</div>
+                        <div class="empty-state-text">Start playing to see moves</div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Saved Games</h2>
-                <div class="game-list" id="gamesList">
-                    <div style="text-align: center; color: #94a3b8; padding: 30px;">
-                        <div style="font-size: 48px; margin-bottom: 10px;">📚</div>
-                        <div style="font-weight: 600;">No saved games</div>
-                        <div style="font-size: 12px; margin-top: 5px;">Create a new game to get started</div>
+                <div class="card-header">💾 Saved Games</div>
+                <div class="games-scroll" id="gamesList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📚</div>
+                        <div class="empty-state-title">No saved games</div>
+                        <div class="empty-state-text">Create your first game</div>
                     </div>
-                </div>
-            </div>
-
-            <div class="card" id="editGameCard" style="display: none;">
-                <h2>Edit Game Name</h2>
-                <div class="game-name-edit">
-                    <input type="text" class="game-name-input" id="editGameNameInput" placeholder="Enter new game name">
-                    <button class="btn-icon" onclick="updateSelectedGameName()" title="Save">💾</button>
-                    <button class="btn-icon cancel" onclick="closeEditGameName()" title="Cancel">✖️</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-content">
+        <div class="loading-card">
             <div class="spinner"></div>
             <div class="loading-text">Engine is thinking...</div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">✏️ Edit Game Name</div>
+            <input type="text" class="input-field" id="editGameNameInput" placeholder="Enter new name">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEditedName()">Save</button>
+            </div>
         </div>
     </div>
 
@@ -737,7 +705,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script>
         const API_BASE = 'https://chess-comp-backend-hddm.vercel.app';
-        const WS_URL = 'wss://chess-comp-backend.onrender.com/ws'
+        const WS_URL = 'wss://chess-comp-backend.onrender.com/ws';
         
         let ws = null;
         let board = null;
@@ -760,6 +728,7 @@
                 pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
             };
             board = Chessboard('board', config);
+            window.addEventListener('resize', () => board.resize());
         }
 
         function onDragStart(source, piece, position, orientation) {
@@ -821,7 +790,6 @@
                     updateGameInfo();
                     
                     if (data.engineMove) {
-                        // Wait for engine move to complete
                         setTimeout(async () => {
                             try {
                                 game.move(convertUciToSan(data.engineMove));
@@ -922,15 +890,13 @@
         }
 
         function updateConnectionStatus(connected) {
-            const status = document.getElementById('wsStatus');
-            const text = document.getElementById('wsText');
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
             if (connected) {
-                status.classList.add('connected');
-                status.classList.remove('disconnected');
-                text.textContent = 'Connected to server';
+                dot.classList.remove('disconnected');
+                text.textContent = 'Connected';
             } else {
-                status.classList.remove('connected');
-                status.classList.add('disconnected');
+                dot.classList.add('disconnected');
                 text.textContent = 'Disconnected';
             }
         }
@@ -940,7 +906,7 @@
         }
 
         async function createNewGame() {
-            const name = document.getElementById('gameName').value || 'Chess Game ' + new Date().toLocaleString();
+            const name = document.getElementById('gameName').value || 'Game ' + new Date().toLocaleString();
             
             try {
                 showLoading(true);
@@ -966,7 +932,6 @@
                 document.getElementById('gameName').value = '';
                 document.getElementById('deleteBtn').disabled = false;
                 updateEvaluationBar(0);
-                updateGameNameDisplay();
                 showLoading(false);
             } catch (error) {
                 console.error('Error creating game:', error);
@@ -993,7 +958,6 @@
                 
                 await loadMoves();
                 updateGameInfo();
-                updateGameNameDisplay();
                 document.getElementById('deleteBtn').disabled = false;
                 document.getElementById('undoBtn').disabled = game.history().length === 0;
             } catch (error) {
@@ -1008,17 +972,16 @@
                 const response = await fetch(`${API_BASE}/api/moves/${currentGameId}`);
                 const moves = await response.json();
                 
-                // Store move history for navigation
                 moveHistory = moves.map(m => m.fenAfterMove);
                 currentMoveIndex = moveHistory.length - 1;
                 
                 const movesList = document.getElementById('movesList');
                 if (moves.length === 0) {
                     movesList.innerHTML = `
-                        <div style="text-align: center; color: #94a3b8; padding: 30px;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">♟️</div>
-                            <div style="font-weight: 600;">No moves yet</div>
-                            <div style="font-size: 12px; margin-top: 5px;">Make your first move!</div>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">♟️</div>
+                            <div class="empty-state-title">No moves yet</div>
+                            <div class="empty-state-text">Make your first move!</div>
                         </div>
                     `;
                     updateNavigationButtons();
@@ -1026,10 +989,10 @@
                 }
                 
                 movesList.innerHTML = moves.map((move, index) => `
-                    <div class="move-item" onclick="goToMove(${index})" style="cursor: pointer;">
-                        <span class="move-number">${Math.floor(index / 2) + 1}${index % 2 === 0 ? '.' : '...'}</span>
-                        <span class="move-notation">${move.move}</span>
-                        <span class="move-by ${move.by}">${move.by === 'user' ? '👤' : '🤖'} ${move.by}</span>
+                    <div class="move-row" onclick="goToMove(${index})">
+                        <span class="move-num">${Math.floor(index / 2) + 1}${index % 2 === 0 ? '.' : '...'}</span>
+                        <span class="move-text">${move.move}</span>
+                        <span class="move-badge ${move.by}">${move.by === 'user' ? '👤' : '🤖'}</span>
                     </div>
                 `).join('');
                 
@@ -1050,7 +1013,7 @@
             document.getElementById('currentTurn').textContent = turn === 'w' ? '⚪ White' : '⚫ Black';
             document.getElementById('gameStatus').textContent = game.game_over() ? 
                 (game.in_checkmate() ? 'Checkmate' : game.in_draw() ? 'Draw' : 'Game Over') : 
-                (game.in_check() ? 'Check!' : 'Ongoing');
+                (game.in_check() ? 'Check!' : 'Active');
         }
 
         async function loadGames() {
@@ -1061,28 +1024,28 @@
                 const gamesList = document.getElementById('gamesList');
                 if (games.length === 0) {
                     gamesList.innerHTML = `
-                        <div style="text-align: center; color: #94a3b8; padding: 30px;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">📚</div>
-                            <div style="font-weight: 600;">No saved games</div>
-                            <div style="font-size: 12px; margin-top: 5px;">Create a new game to get started</div>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📚</div>
+                            <div class="empty-state-title">No saved games</div>
+                            <div class="empty-state-text">Create a new game to get started</div>
                         </div>
                     `;
                     return;
                 }
                 
                 gamesList.innerHTML = games.map(game => `
-                    <div class="game-item ${game._id === currentGameId ? 'active' : ''}" onclick="loadGame('${game._id}')">
-                        <div class="game-item-header">
-                            <div class="game-item-name">${game.name}</div>
-                            <div style="display: flex; gap: 5px;">
-                                <button class="game-item-delete" style="background: rgba(102, 126, 234, 0.1); color: #667eea;" onclick="event.stopPropagation(); openEditGameName('${game._id}', '${game.name.replace(/'/g, "\\'")}')">✏️ Edit</button>
-                                <button class="game-item-delete" onclick="event.stopPropagation(); deleteGame('${game._id}')">🗑️ Delete</button>
+                    <div class="game-card ${game._id === currentGameId ? 'active' : ''}" onclick="loadGame('${game._id}')">
+                        <div class="game-card-header">
+                            <div class="game-title">${game.name}</div>
+                            <div class="game-actions">
+                                <button class="game-action-btn" onclick="event.stopPropagation(); openEditModal('${game._id}', '${game.name.replace(/'/g, "\\'")}')">✏️</button>
+                                <button class="game-action-btn" onclick="event.stopPropagation(); deleteGame('${game._id}')">🗑️</button>
                             </div>
                         </div>
-                        <div class="game-item-info">
-                            <span>${game.side === 'white' ? '⚪ White' : '⚫ Black'}</span>
-                            <span>📊 ${game.moves?.length || 0} moves</span>
-                            <span>${game.status === 'ongoing' ? '▶️ Active' : '✓ Finished'}</span>
+                        <div class="game-meta">
+                            <span class="game-meta-item">${game.side === 'white' ? '⚪ White' : '⚫ Black'}</span>
+                            <span class="game-meta-item">📊 ${game.moves?.length || 0} moves</span>
+                            <span class="game-meta-item">${game.status === 'ongoing' ? '▶️ Active' : '✓ Done'}</span>
                         </div>
                     </div>
                 `).join('');
@@ -1092,7 +1055,7 @@
         }
 
         async function deleteGame(gameId) {
-            if (!confirm('Are you sure you want to delete this game?')) return;
+            if (!confirm('Delete this game?')) return;
             
             try {
                 const response = await fetch(`${API_BASE}/api/games/${gameId}`, {
@@ -1108,7 +1071,6 @@
                         document.getElementById('deleteBtn').disabled = true;
                         document.getElementById('undoBtn').disabled = true;
                         updateGameInfo();
-                        updateGameNameDisplay();
                     }
                     await loadGames();
                 }
@@ -1155,7 +1117,6 @@
             const evalBar = document.getElementById('evalBar');
             const evalText = document.getElementById('evalText');
             
-            // Convert evaluation to percentage (capped at -10 to +10)
             const cappedEval = Math.max(-10, Math.min(10, evaluation));
             const percentage = ((cappedEval + 10) / 20) * 100;
             
@@ -1163,17 +1124,16 @@
             
             if (evaluation > 0) {
                 evalText.textContent = '+' + evaluation.toFixed(2);
-                evalBar.style.background = 'linear-gradient(90deg, #10b981 0%, #34d399 100%)';
+                evalBar.style.background = 'linear-gradient(90deg, #10b981, #34d399)';
             } else if (evaluation < 0) {
                 evalText.textContent = evaluation.toFixed(2);
-                evalBar.style.background = 'linear-gradient(90deg, #ef4444 0%, #f87171 100%)';
+                evalBar.style.background = 'linear-gradient(90deg, #ef4444, #f87171)';
             } else {
                 evalText.textContent = '0.00';
-                evalBar.style.background = 'linear-gradient(90deg, #94a3b8 0%, #cbd5e1 100%)';
+                evalBar.style.background = 'linear-gradient(90deg, #94a3b8, #cbd5e1)';
             }
         }
 
-        // Move Navigation Functions
         function goToStart() {
             currentMoveIndex = -1;
             game.reset();
@@ -1242,99 +1202,27 @@
             } else {
                 const moveNumber = Math.floor(currentMoveIndex / 2) + 1;
                 const isWhiteMove = currentMoveIndex % 2 === 0;
-                positionText.textContent = `Move ${moveNumber}${isWhiteMove ? '.' : '...'}`;
+                positionText.textContent = `${moveNumber}${isWhiteMove ? '.' : '...'}`;
             }
         }
 
-        // Game Name Edit Functions
-        function updateGameNameDisplay() {
-            const container = document.getElementById('gameNameContainer');
-            const nameDisplay = document.getElementById('currentGameName');
-            
-            if (currentGameId && gameData) {
-                container.style.display = 'block';
-                nameDisplay.textContent = gameData.name || 'Unnamed Game';
-            } else {
-                container.style.display = 'none';
-            }
-        }
-
-        function editGameName() {
-            const display = document.getElementById('gameNameDisplay');
-            const edit = document.getElementById('gameNameEdit');
-            const input = document.getElementById('gameNameInput');
-            
-            input.value = gameData.name || '';
-            display.style.display = 'none';
-            edit.style.display = 'flex';
-            input.focus();
-        }
-
-        function cancelEditName() {
-            const display = document.getElementById('gameNameDisplay');
-            const edit = document.getElementById('gameNameEdit');
-            
-            display.style.display = 'flex';
-            edit.style.display = 'none';
-        }
-
-        async function saveGameName() {
-            const input = document.getElementById('gameNameInput');
-            const newName = input.value.trim();
-            
-            if (!newName) {
-                alert('Game name cannot be empty');
-                return;
-            }
-            
-            if (!currentGameId) {
-                alert('No game selected');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE}/api/games/${currentGameId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: newName })
-                });
-                
-                if (response.ok) {
-                    const updatedGame = await response.json();
-                    gameData.name = updatedGame.name;
-                    updateGameNameDisplay();
-                    cancelEditName();
-                    await loadGames();
-                } else {
-                    alert('Failed to update game name');
-                }
-            } catch (error) {
-                console.error('Error updating game name:', error);
-                alert('Error updating game name');
-            }
-        }
-
-        // Edit game name from saved games list
-        function openEditGameName(gameId, currentName) {
+        function openEditModal(gameId, currentName) {
             editingGameId = gameId;
             const input = document.getElementById('editGameNameInput');
-            const card = document.getElementById('editGameCard');
+            const modal = document.getElementById('editModal');
             
             input.value = currentName;
-            card.style.display = 'block';
+            modal.style.display = 'flex';
             input.focus();
-            
-            // Scroll to the edit card
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function closeEditGameName() {
+        function closeEditModal() {
             editingGameId = null;
-            document.getElementById('editGameCard').style.display = 'none';
+            document.getElementById('editModal').style.display = 'none';
             document.getElementById('editGameNameInput').value = '';
         }
 
-        async function updateSelectedGameName() {
+        async function saveEditedName() {
             const input = document.getElementById('editGameNameInput');
             const newName = input.value.trim();
             
@@ -1356,14 +1244,12 @@
                 });
                 
                 if (response.ok) {
-                    // If editing the current game, update gameData
                     if (editingGameId === currentGameId) {
                         const updatedGame = await response.json();
                         gameData.name = updatedGame.name;
-                        updateGameNameDisplay();
                     }
                     
-                    closeEditGameName();
+                    closeEditModal();
                     await loadGames();
                 } else {
                     alert('Failed to update game name');
@@ -1374,40 +1260,28 @@
             }
         }
 
-        // Add keyboard support for game name input
-        document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('gameNameInput');
-            if (input) {
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        saveGameName();
-                    } else if (e.key === 'Escape') {
-                        cancelEditName();
-                    }
-                });
-            }
-            
-            const editInput = document.getElementById('editGameNameInput');
-            if (editInput) {
-                editInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        updateSelectedGameName();
-                    } else if (e.key === 'Escape') {
-                        closeEditGameName();
-                    }
-                });
-            }
-        });
-
-        document.querySelectorAll('.side-btn').forEach(btn => {
+        document.querySelectorAll('.side-option').forEach(btn => {
             btn.onclick = function() {
-                document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.side-option').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 playerSide = this.dataset.side;
             };
         });
 
-        // Initialize
+        document.getElementById('editGameNameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveEditedName();
+            } else if (e.key === 'Escape') {
+                closeEditModal();
+            }
+        });
+
+        document.getElementById('editModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editModal') {
+                closeEditModal();
+            }
+        });
+
         initChessboard();
         initWebSocket();
         loadGames();
